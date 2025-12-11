@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Něco krásného pro Tebe</title>
 
-  <!-- Hezčí písma z Google Fonts -->
+  <!-- Písma -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
@@ -75,22 +75,22 @@
       100% { transform: translateY(0px); opacity: 0.2; }
     }
 
-    /* hlavní kartička – trochu větší */
+    /* větší kartička */
     .card {
       position: relative;
-      max-width: 560px;
+      max-width: 600px;
       width: 100%;
-      min-height: 360px;
+      min-height: 380px;
       background: var(--card);
-      border-radius: 26px;
-      padding: 40px 26px 36px;
+      border-radius: 28px;
+      padding: 46px 30px 40px;
       box-shadow:
-        0 20px 50px rgba(0,0,0,0.07),
-        0 0 0 1px rgba(255,255,255,0.8);
+        0 22px 55px rgba(0,0,0,0.08),
+        0 0 0 1px rgba(255,255,255,0.85);
       text-align: center;
       z-index: 1;
       animation: cardIn 0.9s ease-out forwards;
-      transform: translateY(20px);
+      transform: translateY(24px);
       opacity: 0;
     }
 
@@ -107,11 +107,10 @@
 
     .card-heading-main {
       font-family: "Playfair Display", "Times New Roman", serif;
-      font-size: clamp(26px, 6vw, 32px);
+      font-size: clamp(26px, 6vw, 34px);
       font-weight: 700;
       letter-spacing: 0.03em;
       margin-bottom: 2px;
-      text-transform: none;
     }
 
     .card-heading-sub {
@@ -119,15 +118,15 @@
       font-size: clamp(20px, 5vw, 24px);
       font-style: italic;
       color: var(--accent);
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
 
     .card-body {
-      font-size: 15px;
-      line-height: 1.6;
+      font-size: 16px;
+      line-height: 1.7;
       color: var(--text-soft);
-      max-width: 440px;
-      margin: 0 auto 24px;
+      max-width: 460px;
+      margin: 0 auto 26px;
     }
 
     .divider {
@@ -135,7 +134,7 @@
       justify-content: center;
       align-items: center;
       gap: 14px;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
 
     .divider-line {
@@ -152,11 +151,11 @@
     }
 
     .quote {
-      font-size: 14px;
+      font-size: 15px;
       font-style: italic;
       color: var(--text-soft);
-      margin-bottom: 24px;
-      padding: 0 8px;
+      margin-bottom: 28px;
+      padding: 0 10px;
     }
 
     .signature {
@@ -164,9 +163,8 @@
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--text-soft);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      display: block;
+      margin-bottom: 18px; /* prostor nad tlačítkem */
     }
 
     .signature-heart {
@@ -174,10 +172,11 @@
       color: var(--accent);
     }
 
-    /* CTA tlačítko dole na kartě */
+    /* tlačítko pod podpisem */
     .cta-button {
-      margin-top: 22px;
-      padding: 10px 24px;
+      display: inline-block;
+      margin-top: 0;
+      padding: 10px 26px;
       border-radius: 999px;
       border: none;
       background: var(--accent);
@@ -204,17 +203,8 @@
 
     @media (min-width: 768px) {
       .card {
-        padding: 46px 46px 40px;
-        min-height: 380px;
-      }
-      .card-body {
-        font-size: 16px;
-      }
-      .quote {
-        font-size: 15px;
-      }
-      .signature {
-        font-size: 13px;
+        padding: 52px 52px 44px;
+        min-height: 400px;
       }
     }
   </style>
@@ -222,7 +212,7 @@
 
 <body>
 
-  <!-- jemně plovoucí srdíčka v pozadí -->
+  <!-- plovoucí srdíčka v pozadí -->
   <div class="floating-hearts" aria-hidden="true">
     <div class="heart-bg">❤</div>
     <div class="heart-bg">❤</div>
@@ -261,11 +251,10 @@
 
     <div class="signature">
       <span class="signature-heart">♥</span>
-      S LÁSKOU
+      &nbsp;S LÁSKOU&nbsp;
       <span class="signature-heart">♥</span>
     </div>
 
-    <!-- tlačítko na další scénu přání -->
     <button class="cta-button" onclick="location.href='scene2.html'">
       Pokračovat
     </button>
