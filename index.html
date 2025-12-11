@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Něco krásného pro Tebe</title>
+
+  <!-- Volitelné – hezčí písma z Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #fff8f5;
+      --card: #ffffff;
+      --accent: #e45b7b;
+      --accent-soft: #f4a8bf;
+      --text-main: #4b2b33;
+      --text-soft: #7b5a63;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      height: 100vh;
+      width: 100vw;
+      background: radial-gradient(circle at top, #ffe8ef 0, var(--bg) 45%, #ffe8ef 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow: hidden;
+      position: relative;
+      color: var(--text-main);
+    }
+
+    /* plovoucí srdíčka v pozadí */
+    .floating-hearts {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 18px;
+      color: var(--accent-soft);
+      opacity: 0.7;
+      animation: float 9s ease-in-out infinite;
+    }
+
+    .heart:nth-child(1) { left: 12%; top: 10%; animation-duration: 10s; }
+    .heart:nth-child(2) { left: 80%; top: 18%; animation-duration: 11s; }
+    .heart:nth-child(3) { left: 8%;  top: 60%; animation-duration: 9s; }
+    .heart:nth-child(4) { left: 88%; top: 65%; animation-duration: 8s; }
+    .heart:nth-child(5) { left: 50%; top: 5%;  animation-duration: 12s; }
+    .heart:nth-child(6) { left: 20%; top: 80%; animation-duration: 10s; }
+    .heart:nth-child(7) { left: 70%; top: 82%; animation-duration: 9s; }
+    .heart:nth-child(8) { left: 30%; top: 30%; animation-duration: 13s; }
+    .heart:nth-child(9) { left: 60%; top: 40%; animation-duration: 10s; }
+    .heart:nth-child(10){ left: 45%; top: 72%; animation-duration: 11s; }
+
+    @keyframes float {
+      0%   { transform: translateY(0px); opacity: 0.2; }
+      25%  { opacity: 0.9; }
+      50%  { transform: translateY(-18px); opacity: 0.6; }
+      75%  { opacity: 0.9; }
+      100% { transform: translateY(0px); opacity: 0.2; }
+    }
+
+    /* hlavní kartička */
+    .card {
+      position: relative;
+      max-width: 520px;
+      width: 100%;
+      background: var(--card);
+      border-radius: 26px;
+      padding: 32px 22px 26px;
+      box-shadow:
+        0 18px 45px rgba(0,0,0,0.06),
+        0 0 0 1px rgba(255,255,255,0.8);
+      text-align: center;
+      z-index: 1;
+      animation: cardIn 0.9s ease-out forwards;
+      transform: translateY(20px);
+      opacity: 0;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(24px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .card-heart {
+      font-size: 32px;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .card-heading-main {
+      font-family: "Playfair Display", "Times New Roman", serif;
+      font-size: clamp(26px, 6vw, 32px);
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      margin-bottom: 2px;
+      text-transform: none;
+    }
+
+    .card-heading-sub {
+      font-family: "Playfair Display", "Times New Roman", serif;
+      font-size: clamp(20px, 5vw, 24px);
+      font-style: italic;
+      color: var(--accent);
+      margin-bottom: 18px;
+    }
+
+    .card-body {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-soft);
+      max-width: 420px;
+      margin: 0 auto 22px;
+    }
+
+    .divider {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .divider-line {
+      width: 56px;
+      height: 1px;
+      background: rgba(0,0,0,0.08);
+    }
+
+    .divider-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .quote {
+      font-size: 14px;
+      font-style: italic;
+      color: var(--text-soft);
+      margin-bottom: 22px;
+      padding: 0 8px;
+    }
+
+    .signature {
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .signature-heart {
+      font-size: 12px;
+      color: var(--accent);
+    }
+
+    @media (min-width: 768px) {
+      .card {
+        padding: 40px 40px 32px;
+      }
+      .card-body {
+        font-size: 16px;
+      }
+      .quote {
+        font-size: 15px;
+      }
+      .signature {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- jemně plovoucí srdíčka v pozadí -->
+  <div class="floating-hearts" aria-hidden="true">
+    <div class="heart">❤</div>
+    <div class="heart">❤</div>
+    <div class="heart">❤</div>
+    <div class="heart">❤</div>
+    <div class="heart">❤</div>
+    <div class="heart">❤</div>
+    <div class="heart">❤</div>
+    <div class="heart">❤</div>
+    <div class="heart">❤</div>
+    <div class="heart">❤</div>
+  </div>
+
+  <!-- hlavní kartička přání -->
+  <main class="card" aria-label="přání">
+    <div class="card-heart">❤</div>
+
+    <h1 class="card-heading-main">Něco krásného</h1>
+    <div class="card-heading-sub">pro Tebe</div>
+
+    <p class="card-body">
+      Každý den je příležitostí najít krásu v maličkostech.
+      Toto přání je právě pro Tebe – jemná připomínka,
+      že jsi výjimečný/á.
+    </p>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-dot"></div>
+      <div class="divider-line"></div>
+    </div>
+
+    <p class="quote">
+      „Krása je všude kolem nás, stačí se jen dívat srdcem.“
+    </p>
+
+    <div class="signature">
+      S láskou
+      <span class="signature-heart">❤</span>
+    </div>
+  </main>
+
+</body>
+</html>
