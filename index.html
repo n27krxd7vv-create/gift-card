@@ -233,6 +233,285 @@
       S láskou
       <span class="signature-heart">❤</span>
     </div>
+    <!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Otevření přání</title>
+
+  <!-- stejné fonty jako na ostatních stránkách -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #fff8f5;
+      --card: #ffffff;
+      --accent: #b93b55;
+      --accent-soft: #e9a3b9;
+      --text-main: #4b2b33;
+      --text-soft: #7b5a63;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      height: 100vh;
+      width: 100vw;
+      background: radial-gradient(circle at top, #ffe8ef 0, var(--bg) 45%, #ffe8ef 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow: hidden;
+      position: relative;
+      color: var(--text-main);
+      text-align: center;
+    }
+
+    /* kvítka v pozadí */
+    .floating-flowers {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.4;
+      font-size: 18px;
+    }
+
+    .floating-flowers span {
+      position: absolute;
+      animation: drift 12s ease-in-out infinite;
+    }
+
+    .floating-flowers span:nth-child(1) { left: 8%;  top: 18%; animation-delay: 0s; }
+    .floating-flowers span:nth-child(2) { left: 82%; top: 20%; animation-delay: 2s; }
+    .floating-flowers span:nth-child(3) { left: 12%; top: 68%; animation-delay: 4s; }
+    .floating-flowers span:nth-child(4) { left: 86%; top: 70%; animation-delay: 6s; }
+    .floating-flowers span:nth-child(5) { left: 48%; top: 10%; animation-delay: 3s; }
+
+    @keyframes drift {
+      0%   { transform: translateY(0px);   opacity: 0.3; }
+      25%  { opacity: 0.7; }
+      50%  { transform: translateY(-14px); opacity: 0.5; }
+      75%  { opacity: 0.7; }
+      100% { transform: translateY(0px);   opacity: 0.3; }
+    }
+
+    /* obal karty */
+    .card-wrapper {
+      position: relative;
+      perspective: 1600px;
+      z-index: 1;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      width: min(320px, 80vw);
+      height: min(420px, 115vw);
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.9s ease-in-out;
+      cursor: pointer;
+    }
+
+    .card.open {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      background: var(--card);
+      border-radius: 26px;
+      box-shadow:
+        0 18px 45px rgba(0,0,0,0.06),
+        0 0 0 1px rgba(255,255,255,0.7);
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 26px;
+    }
+
+    /* předek přání (zavřená karta) */
+    .card-front {
+      transform: rotateY(0deg);
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+    }
+
+    .front-flowers {
+      position: absolute;
+      inset: 18px 22px;
+      pointer-events: none;
+      font-size: 18px;
+      color: var(--accent-soft);
+    }
+
+    .front-flowers span {
+      position: absolute;
+    }
+
+    .front-flowers span:nth-child(1) { left: 0; top: 0; }
+    .front-flowers span:nth-child(2) { right: 0; top: 0; }
+    .front-flowers span:nth-child(3) { left: 0; bottom: 0; }
+    .front-flowers span:nth-child(4) { right: 0; bottom: 0; }
+    .front-flowers span:nth-child(5) { left: 50%; bottom: 0; transform: translateX(-50%); }
+
+    .front-title {
+      font-family: "Playfair Display", "Times New Roman", serif;
+      font-size: 28px;
+      margin-bottom: 6px;
+      color: var(--accent);
+    }
+
+    .front-subtitle {
+      font-size: 14px;
+      color: var(--text-soft);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    /* vnitřek přání (po otevření) */
+    .sparkle {
+      font-size: 20px;
+      color: var(--accent-soft);
+      margin-bottom: 14px;
+    }
+
+    .inner-title {
+      font-family: "Playfair Display", "Times New Roman", serif;
+      font-size: 24px;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .inner-text {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-soft);
+    }
+
+    .inner-text .heart {
+      color: var(--accent);
+      font-size: 16px;
+    }
+
+    /* text pod kartou */
+    #hint {
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+  </style>
+  :root {
+     --bg: ...;
+     ...
+  }
+
+  body {
+     ...
+  }
+
+  /* další tvoje styly */
+
+  /* SEM vlož nový kód tlačítka */
+  .cta-button {
+    margin-top: 28px;
+    padding: 12px 28px;
+    border-radius: 999px;
+    border: none;
+    background: var(--accent);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(185, 59, 85, 0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .cta-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 26px rgba(185, 59, 85, 0.45);
+    background: #a8324a;
+  }
+
+  .cta-button:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 0 6px 16px rgba(185, 59, 85, 0.3);
+  }
+
+</style>
+</head>
+
+<body>
+
+  <!-- jemně se pohybující kytičky v pozadí -->
+  <div class="floating-flowers" aria-hidden="true">
+    <span>✿</span>
+    <span>❀</span>
+    <span>✿</span>
+    <span>❀</span>
+    <span>✿</span>
+  </div>
+
+  <!-- karta, která se otevírá -->
+  <div class="card-wrapper">
+    <div class="card" id="card">
+      <!-- předek přání -->
+      <div class="card-face card-front">
+        <div class="front-flowers">
+          <span>✿</span>
+          <span>❀</span>
+          <span>❀</span>
+          <span>✿</span>
+          <span>✿</span>
+        </div>
+        <div class="front-title">Pro Tebe</div>
+        <div class="front-subtitle">s láskou</div>
+      </div>
+
+      <!-- vnitřek přání -->
+      <div class="card-face card-back">
+        <div class="sparkle>✨</div>
+        <div class="inner-title">tvůj text</div>
+        <div class="inner-text">
+          Místo, kde najdeš<br/>
+          něco krásného<br/>
+          jen pro sebe <span class="heart">♥</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="hint">KLIKNI NA PŘÁNÍ</div>
+
+  <script>
+    const card = document.getElementById("card");
+    const hint = document.getElementById("hint");
+
+    card.addEventListener("click", () => {
+      card.classList.add("open");
+      hint.textContent = ""; // schováme text pod kartou po otevření
+    });
+  </script>
+
+</body>
+</html>
   </main>
 
 </body>
