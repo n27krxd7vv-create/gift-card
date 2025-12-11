@@ -42,7 +42,7 @@
       text-align: center;
     }
 
-    /* kvítka v pozadí */
+    /* kytičky v pozadí */
     .floating-flowers {
       position: absolute;
       inset: 0;
@@ -70,7 +70,7 @@
       100% { transform: translateY(0px);   opacity: 0.3; }
     }
 
-    /* obal karty */
+    /* obal karty – větší */
     .card-wrapper {
       position: relative;
       perspective: 1600px;
@@ -79,8 +79,8 @@
     }
 
     .card {
-      width: min(320px, 80vw);
-      height: min(420px, 115vw);
+      width: min(360px, 84vw);
+      height: min(500px, 130vw);
       position: relative;
       transform-style: preserve-3d;
       transition: transform 0.9s ease-in-out;
@@ -97,14 +97,14 @@
       background: var(--card);
       border-radius: 26px;
       box-shadow:
-        0 18px 45px rgba(0,0,0,0.06),
+        0 20px 50px rgba(0,0,0,0.07),
         0 0 0 1px rgba(255,255,255,0.7);
       backface-visibility: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 32px 26px;
+      padding: 40px 30px;
     }
 
     /* předek přání (zavřená karta) */
@@ -118,7 +118,7 @@
 
     .front-flowers {
       position: absolute;
-      inset: 18px 22px;
+      inset: 24px 28px;
       pointer-events: none;
       font-size: 18px;
       color: var(--accent-soft);
@@ -136,8 +136,8 @@
 
     .front-title {
       font-family: "Playfair Display", "Times New Roman", serif;
-      font-size: 28px;
-      margin-bottom: 6px;
+      font-size: 26px;
+      margin-bottom: 10px;
       color: var(--accent);
     }
 
@@ -157,9 +157,9 @@
 
     .inner-title {
       font-family: "Playfair Display", "Times New Roman", serif;
-      font-size: 24px;
+      font-size: 22px;
       color: var(--accent);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .inner-text {
@@ -179,6 +179,13 @@
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--text-soft);
+    }
+
+    @media (min-width: 768px) {
+      .card {
+        width: 380px;
+        height: 520px;
+      }
     }
   </style>
 </head>
@@ -207,12 +214,12 @@
           <span>✿</span>
         </div>
         <div class="front-title">Pro Tebe</div>
-        <div class="front-subtitle">s láskou</div>
+        <div class="front-subtitle">S LÁSKOU</div>
       </div>
 
       <!-- vnitřek přání -->
       <div class="card-face card-back">
-        <div class="sparkle>✨</div>
+        <div class="sparkle">✨</div>
         <div class="inner-title">tvůj text</div>
         <div class="inner-text">
           Místo, kde najdeš<br/>
@@ -231,7 +238,7 @@
 
     card.addEventListener("click", () => {
       card.classList.add("open");
-      hint.textContent = ""; // schováme text pod kartou po otevření
+      hint.textContent = ""; // po otevření schová text
     });
   </script>
 
