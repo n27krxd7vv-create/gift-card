@@ -78,55 +78,70 @@
     /* větší kartička */
     .card {
       position: relative;
-      max-width: 600px;
+      max-width: 640px;
       width: 100%;
-      min-height: 380px;
+      min-height: 420px;
       background: var(--card);
-      border-radius: 28px;
-      padding: 46px 30px 40px;
+      border-radius: 30px;
+      padding: 52px 34px 46px;
       box-shadow:
-        0 22px 55px rgba(0,0,0,0.08),
+        0 24px 60px rgba(0,0,0,0.09),
         0 0 0 1px rgba(255,255,255,0.85);
       text-align: center;
       z-index: 1;
-      animation: cardIn 0.9s ease-out forwards;
-      transform: translateY(24px);
+      animation: cardIn 0.7s ease-out forwards;
+      transform: translateY(26px);
       opacity: 0;
+      overflow: hidden; /* aby text vyjížděl zevnitř */
     }
 
+    /* animace celé karty (rychlejší) */
     @keyframes cardIn {
-      from { opacity: 0; transform: translateY(24px) scale(0.98); }
+      from { opacity: 0; transform: translateY(26px) scale(0.98); }
       to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* animace obsahu – pomalu vyjíždí ze spodu */
+    .card-content {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: contentUp 1.2s ease-out forwards;
+      animation-delay: 0.25s;
+    }
+
+    @keyframes contentUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     .card-heart {
       font-size: 32px;
       color: var(--accent);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .card-heading-main {
       font-family: "Playfair Display", "Times New Roman", serif;
-      font-size: clamp(26px, 6vw, 34px);
+      font-size: clamp(27px, 6.4vw, 36px);
       font-weight: 700;
       letter-spacing: 0.03em;
-      margin-bottom: 2px;
+      margin-bottom: 4px;
     }
 
     .card-heading-sub {
       font-family: "Playfair Display", "Times New Roman", serif;
-      font-size: clamp(20px, 5vw, 24px);
+      font-size: clamp(20px, 5.2vw, 24px);
       font-style: italic;
       color: var(--accent);
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
 
     .card-body {
       font-size: 16px;
       line-height: 1.7;
       color: var(--text-soft);
-      max-width: 460px;
-      margin: 0 auto 26px;
+      max-width: 480px;
+      margin: 0 auto 28px;
     }
 
     .divider {
@@ -134,11 +149,11 @@
       justify-content: center;
       align-items: center;
       gap: 14px;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
 
     .divider-line {
-      width: 56px;
+      width: 64px;
       height: 1px;
       background: rgba(0,0,0,0.08);
     }
@@ -154,8 +169,8 @@
       font-size: 15px;
       font-style: italic;
       color: var(--text-soft);
-      margin-bottom: 28px;
-      padding: 0 10px;
+      margin-bottom: 30px;
+      padding: 0 12px;
     }
 
     .signature {
@@ -164,7 +179,7 @@
       text-transform: uppercase;
       color: var(--text-soft);
       display: block;
-      margin-bottom: 18px; /* prostor nad tlačítkem */
+      margin-bottom: 18px;
     }
 
     .signature-heart {
@@ -175,8 +190,7 @@
     /* tlačítko pod podpisem */
     .cta-button {
       display: inline-block;
-      margin-top: 0;
-      padding: 10px 26px;
+      padding: 11px 28px;
       border-radius: 999px;
       border: none;
       background: var(--accent);
@@ -203,8 +217,8 @@
 
     @media (min-width: 768px) {
       .card {
-        padding: 52px 52px 44px;
-        min-height: 400px;
+        padding: 58px 56px 50px;
+        min-height: 440px;
       }
     }
   </style>
@@ -228,36 +242,38 @@
 
   <!-- hlavní kartička přání -->
   <main class="card" aria-label="přání">
-    <div class="card-heart">❤</div>
+    <div class="card-content">
+      <div class="card-heart">❤</div>
 
-    <h1 class="card-heading-main">Něco krásného</h1>
-    <div class="card-heading-sub">pro Tebe</div>
+      <h1 class="card-heading-main">Něco krásného</h1>
+      <div class="card-heading-sub">pro Tebe</div>
 
-    <p class="card-body">
-      Každý den je příležitostí najít krásu v maličkostech.
-      Toto přání je právě pro Tebe – jemná připomínka,
-      že jsi výjimečný/á.
-    </p>
+      <p class="card-body">
+        Každý den je příležitostí najít krásu v maličkostech.
+        Toto přání je právě pro Tebe – jemná připomínka,
+        že jsi výjimečný/á.
+      </p>
 
-    <div class="divider">
-      <div class="divider-line"></div>
-      <div class="divider-dot"></div>
-      <div class="divider-line"></div>
+      <div class="divider">
+        <div class="divider-line"></div>
+        <div class="divider-dot"></div>
+        <div class="divider-line"></div>
+      </div>
+
+      <p class="quote">
+        „Krása je všude kolem nás, stačí se jen dívat srdcem.“
+      </p>
+
+      <div class="signature">
+        <span class="signature-heart">♥</span>
+        &nbsp;S LÁSKOU&nbsp;
+        <span class="signature-heart">♥</span>
+      </div>
+
+      <button class="cta-button" onclick="location.href='scene2.html'">
+        Pokračovat
+      </button>
     </div>
-
-    <p class="quote">
-      „Krása je všude kolem nás, stačí se jen dívat srdcem.“
-    </p>
-
-    <div class="signature">
-      <span class="signature-heart">♥</span>
-      &nbsp;S LÁSKOU&nbsp;
-      <span class="signature-heart">♥</span>
-    </div>
-
-    <button class="cta-button" onclick="location.href='scene2.html'">
-      Pokračovat
-    </button>
   </main>
 
 </body>
