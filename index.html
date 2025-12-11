@@ -75,16 +75,17 @@
       100% { transform: translateY(0px); opacity: 0.2; }
     }
 
-    /* hlavní kartička */
+    /* hlavní kartička – trochu větší */
     .card {
       position: relative;
-      max-width: 520px;
+      max-width: 560px;
       width: 100%;
+      min-height: 360px;
       background: var(--card);
       border-radius: 26px;
-      padding: 32px 22px 30px;
+      padding: 40px 26px 36px;
       box-shadow:
-        0 18px 45px rgba(0,0,0,0.06),
+        0 20px 50px rgba(0,0,0,0.07),
         0 0 0 1px rgba(255,255,255,0.8);
       text-align: center;
       z-index: 1;
@@ -125,8 +126,8 @@
       font-size: 15px;
       line-height: 1.6;
       color: var(--text-soft);
-      max-width: 420px;
-      margin: 0 auto 22px;
+      max-width: 440px;
+      margin: 0 auto 24px;
     }
 
     .divider {
@@ -154,7 +155,7 @@
       font-size: 14px;
       font-style: italic;
       color: var(--text-soft);
-      margin-bottom: 22px;
+      margin-bottom: 24px;
       padding: 0 8px;
     }
 
@@ -175,7 +176,7 @@
 
     /* CTA tlačítko dole na kartě */
     .cta-button {
-      margin-top: 26px;
+      margin-top: 22px;
       padding: 10px 24px;
       border-radius: 999px;
       border: none;
@@ -203,7 +204,8 @@
 
     @media (min-width: 768px) {
       .card {
-        padding: 40px 40px 34px;
+        padding: 46px 46px 40px;
+        min-height: 380px;
       }
       .card-body {
         font-size: 16px;
@@ -258,8 +260,9 @@
     </p>
 
     <div class="signature">
-      S láskou
-      <span class="signature-heart">❤</span>
+      <span class="signature-heart">♥</span>
+      S LÁSKOU
+      <span class="signature-heart">♥</span>
     </div>
 
     <!-- tlačítko na další scénu přání -->
