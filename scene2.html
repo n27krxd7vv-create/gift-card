@@ -2,7 +2,7 @@
 <html lang="cs">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=devicewidth, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Otevření přání</title>
 
   <!-- Fonty -->
@@ -20,7 +20,7 @@
       --text-soft: #7b5a63;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       height: 100vh;
@@ -31,16 +31,15 @@
       justify-content: center;
       align-items: center;
       padding: 16px;
-      font-family: "Nunito";
       overflow: hidden;
-      position: relative;
+      font-family: "Nunito";
       color: var(--text-main);
       text-align: center;
     }
 
-    /* Animace jako na 1. stránce */
+    /* ANIMACE */
     @keyframes cardIn {
-      from { opacity: 0; transform: translateY(26px) scale(0.98); }
+      from { opacity: 0; transform: translateY(26px) scale(0.95); }
       to   { opacity: 1; transform: translateY(0) scale(1); }
     }
 
@@ -49,39 +48,17 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* Pozadí */
-    .floating-flowers {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.45;
-      font-size: 18px;
-    }
-
-    .floating-flowers span {
-      position: absolute;
-      animation: drift 12s ease-in-out infinite;
-    }
-
-    @keyframes drift {
-      0%   { transform: translateY(0px); opacity: 0.3; }
-      50%  { transform: translateY(-14px); opacity: 0.6; }
-      100% { transform: translateY(0px); opacity: 0.3; }
-    }
-
-    /* Obal karty */
+    /* WRAPPER */
     .card-wrapper {
-      position: relative;
-      perspective: 1600px;
-      z-index: 2;
-      animation: cardIn 0.9s ease-out forwards;
+      perspective: 1800px;
+      animation: cardIn 1s ease-out forwards;
       opacity: 0;
     }
 
-    /* Karta */
+    /* KARTA – zvětšeno o dalších 15 % */
     .card {
-      width: min(390px, 90vw);
-      height: min(530px, 150vw);
+      width: min(450px, 95vw);     /* původně 390 → větší */
+      height: min(620px, 170vw);   /* původně 530 → větší */
       position: relative;
       transform-style: preserve-3d;
       transition: transform 1s ease-in-out;
@@ -92,86 +69,75 @@
       transform: rotateY(180deg);
     }
 
-    /* Obě strany karty */
+    /* SPOLEČNÉ PRO OBOUSTRANNOST */
     .card-face {
       position: absolute;
       inset: 0;
       background: var(--card);
-      border-radius: 28px;
-      box-shadow:
-        0 22px 55px rgba(0,0,0,0.08),
-        0 0 0 1px rgba(255,255,255,0.7);
+      border-radius: 32px;
       backface-visibility: hidden;
-      padding: 48px 34px;
+      box-shadow:
+        0 28px 70px rgba(0,0,0,0.1),
+        0 0 0 1px rgba(255,255,255,0.7);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      padding: 60px 40px;
     }
 
-    /* Text uvnitř – animace */
     .content-anim {
       opacity: 0;
-      animation: contentUp 1.15s ease-out forwards;
-      animation-delay: 0.25s;
+      animation: contentUp 1.2s ease-out forwards;
+      animation-delay: 0.35s;
     }
 
-    /* Přední strana */
-    .front-flowers {
-      position: absolute;
-      inset: 24px 28px;
-      font-size: 20px;
-      color: var(--accent-soft);
-      pointer-events: none;
-    }
-
-    /* +20 % větší texty */
+    /* PŘEDNÍ STRANA (větší texty) */
     .front-title {
       font-family: "Playfair Display";
-      font-size: 33px; /* původně 24 → + ~20–30% */
+      font-size: 40px;        /* zvětšeno */
       color: var(--accent);
-      margin-bottom: 10px;
+      margin-bottom: 14px;
     }
 
     .front-subtitle {
-      font-size: 17px; /* původně 13 */
-      color: var(--text-soft);
-      letter-spacing: 0.14em;
+      font-size: 20px;        /* zvětšeno */
+      letter-spacing: 0.16em;
       text-transform: uppercase;
+      color: var(--text-soft);
     }
 
-    /* Zadní strana */
+    /* ZADNÍ STRANA (větší texty) */
+    .card-back {
+      transform: rotateY(180deg);
+    }
+
     .sparkle {
-      font-size: 24px; /* větší */
+      font-size: 28px;       /* zvětšeno */
       color: var(--accent-soft);
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
 
     .inner-title {
       font-family: "Playfair Display";
-      font-size: 26px; /* původně 20 */
+      font-size: 32px;       /* zvětšeno */
       color: var(--accent);
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     .inner-text {
-      font-size: 20px; /* původně 15 */
+      font-size: 22px;       /* zvětšeno */
       line-height: 1.7;
       color: var(--text-soft);
     }
 
-    .inner-text .heart {
-      color: var(--accent);
-      font-size: 20px;
-    }
-
     #hint {
-      margin-top: 22px;
-      font-size: 15px;
-      letter-spacing: 0.18em;
+      margin-top: 26px;
+      font-size: 16px;
+      letter-spacing: 0.20em;
       color: var(--text-soft);
       text-transform: uppercase;
-      animation: contentUp 1.3s ease-out forwards;
+      animation: contentUp 1.4s ease-out forwards;
       opacity: 0;
     }
   </style>
@@ -179,32 +145,20 @@
 
 <body>
 
-  <!-- plovoucí kytičky -->
-  <div class="floating-flowers">
-    <span>✿</span><span>❀</span><span>✿</span><span>❀</span><span>✿</span>
-  </div>
-
-  <!-- karta -->
+  <!-- KARTA -->
   <div class="card-wrapper">
     <div class="card" id="card">
 
-      <!-- přední strana -->
+      <!-- PŘEDNÍ STRANA -->
       <div class="card-face card-front">
-
-        <div class="front-flowers">
-          <span>✿</span><span>❀</span><span>❀</span><span>✿</span><span>✿</span>
-        </div>
-
         <div class="content-anim">
           <div class="front-title">Pro Tebe</div>
           <div class="front-subtitle">S LÁSKOU</div>
         </div>
-
       </div>
 
-      <!-- zadní strana -->
+      <!-- ZADNÍ STRANA -->
       <div class="card-face card-back">
-
         <div class="content-anim">
           <div class="sparkle">✨</div>
           <div class="inner-title">tvůj text</div>
@@ -214,7 +168,6 @@
             jen pro sebe <span class="heart">♥</span>
           </div>
         </div>
-
       </div>
 
     </div>
