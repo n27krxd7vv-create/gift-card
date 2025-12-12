@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Něco krásného pro Tebe</title>
+  <title>Fotka pro Tebe</title>
 
   <!-- Písma -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,9 +34,10 @@
       overflow: hidden;
       position: relative;
       color: var(--text-main);
+      text-align: center;
     }
 
-    /* ====== POZADÍ: univerzální vrstva plovoucích částic ====== */
+    /* ====== POZADÍ (stejné jako index) ====== */
     .floating-bg {
       position: absolute;
       inset: 0;
@@ -54,7 +55,6 @@
       user-select: none;
     }
 
-    /* stejné rozmístění jako původní srdíčka */
     .bg-item:nth-child(1)  { left: 12%; top: 10%; animation-duration: 10s; }
     .bg-item:nth-child(2)  { left: 80%; top: 18%; animation-duration: 11s; }
     .bg-item:nth-child(3)  { left: 8%;  top: 60%; animation-duration: 9s; }
@@ -74,42 +74,44 @@
       100% { transform: translateY(0px); opacity: 0.2; }
     }
 
-    /* varianta pro birthday: použijeme "konfety" jako malé čtverečky/tečky */
+    /* birthday pozadí – malé tvary */
     .bg-item.confetti {
-      font-size: 0; /* schová text */
+      font-size: 0;
       width: 10px;
       height: 10px;
       border-radius: 2px;
       background: var(--accent-soft);
       opacity: 0.55;
     }
-    .bg-item.confetti.round {
-      border-radius: 999px;
+    .bg-item.confetti.round { border-radius: 999px; }
+
+    /* ====== ANIMACE KARTY / OBSAHU (stejné jako index) ====== */
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(26px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* větší kartička */
+    @keyframes contentUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
     .card {
       position: relative;
-      max-width: 640px;
+      max-width: 700px;
       width: 100%;
-      min-height: 420px;
+      min-height: 520px;
       background: var(--card);
       border-radius: 30px;
-      padding: 52px 34px 46px;
+      padding: 44px 26px 34px;
       box-shadow:
         0 24px 60px rgba(0,0,0,0.09),
         0 0 0 1px rgba(255,255,255,0.85);
-      text-align: center;
       z-index: 1;
       animation: cardIn 0.7s ease-out forwards;
       transform: translateY(26px);
       opacity: 0;
       overflow: hidden;
-    }
-
-    @keyframes cardIn {
-      from { opacity: 0; transform: translateY(26px) scale(0.98); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .card-content {
@@ -119,192 +121,172 @@
       animation-delay: 0.25s;
     }
 
-    @keyframes contentUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
     .card-heart {
-      font-size: 32px;
+      font-size: 28px;
       color: var(--accent);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
-    .card-heading-main {
+    .title {
       font-family: "Playfair Display", "Times New Roman", serif;
-      font-size: clamp(27px, 6.4vw, 36px);
+      font-size: clamp(26px, 6.6vw, 38px);
       font-weight: 700;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.02em;
       margin-bottom: 4px;
     }
 
-    .card-heading-sub {
+    .subtitle {
       font-family: "Playfair Display", "Times New Roman", serif;
-      font-size: clamp(20px, 5.2vw, 24px);
+      font-size: clamp(18px, 5vw, 24px);
       font-style: italic;
       color: var(--accent);
-      margin-bottom: 22px;
-    }
-
-    .card-body {
-      font-size: 16px;
-      line-height: 1.7;
-      color: var(--text-soft);
-      max-width: 480px;
-      margin: 0 auto 28px;
-    }
-
-    .divider {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 22px;
-    }
-
-    .divider-line {
-      width: 64px;
-      height: 1px;
-      background: rgba(0,0,0,0.08);
-    }
-
-    .divider-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-    }
-
-    .quote {
-      font-size: 15px;
-      font-style: italic;
-      color: var(--text-soft);
-      margin-bottom: 30px;
-      padding: 0 12px;
-    }
-
-    .signature {
-      font-size: 13px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-soft);
-      display: block;
       margin-bottom: 18px;
     }
 
-    .signature-heart {
-      font-size: 12px;
-      color: var(--accent);
+    /* ====== MÍSTO NA FOTKU ====== */
+    .photo-frame {
+      width: 100%;
+      max-width: 520px;
+      aspect-ratio: 4 / 5; /* krásný portrét */
+      margin: 0 auto 18px;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at top, rgba(228,91,123,0.10), rgba(255,255,255,1) 60%);
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.06);
+      overflow: hidden;
+      position: relative;
+      display: grid;
+      place-items: center;
     }
 
-    .cta-button {
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none; /* zobrazí se až po nahrání */
+    }
+
+    .photo-placeholder {
+      padding: 18px;
+      color: var(--text-soft);
+      line-height: 1.6;
+      max-width: 420px;
+    }
+
+    .photo-placeholder strong {
+      color: var(--text-main);
+    }
+
+    .upload-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 12px 0 18px;
+    }
+
+    .btn {
       display: inline-block;
-      padding: 11px 28px;
+      padding: 11px 18px;
       border-radius: 999px;
-      border: none;
-      background: var(--accent);
-      color: #ffffff;
-      font-size: 14px;
+      border: 1px solid rgba(0,0,0,0.10);
+      background: rgba(255,255,255,0.75);
+      color: var(--text-main);
+      font-size: 13px;
       font-weight: 600;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       cursor: pointer;
-      box-shadow: 0 8px 22px rgba(228, 91, 123, 0.35);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.05);
     }
 
-    .cta-button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 26px rgba(228, 91, 123, 0.45);
-      background: #d84b6e;
+    .btn:active { transform: translateY(1px) scale(0.99); }
+
+    .btn-primary{
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 10px 26px rgba(228, 91, 123, 0.35);
     }
 
-    .cta-button:active {
-      transform: translateY(1px) scale(0.98);
-      box-shadow: 0 6px 16px rgba(228, 91, 123, 0.3);
+    .btn-primary:hover { filter: brightness(0.98); }
+
+    .note {
+      font-size: 14px;
+      color: var(--text-soft);
+      margin-top: 6px;
     }
+
+    input[type="file"] { display: none; }
 
     @media (min-width: 768px) {
-      .card { padding: 58px 56px 50px; min-height: 440px; }
+      .card { padding: 54px 56px 46px; min-height: 560px; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- pozadí částic (srdíčka/konfety/vločky) -->
+  <!-- Pozadí -->
   <div class="floating-bg" id="floatingBg" aria-hidden="true">
     <div class="bg-item">❤</div><div class="bg-item">❤</div><div class="bg-item">❤</div><div class="bg-item">❤</div><div class="bg-item">❤</div>
     <div class="bg-item">❤</div><div class="bg-item">❤</div><div class="bg-item">❤</div><div class="bg-item">❤</div><div class="bg-item">❤</div>
   </div>
 
-  <!-- hlavní kartička přání -->
-  <main class="card" aria-label="přání">
+  <main class="card" aria-label="Fotka">
     <div class="card-content">
       <div class="card-heart">❤</div>
+      <h1 class="title">Tvoje fotka</h1>
+      <div class="subtitle">jen pro Tebe</div>
 
-      <h1 class="card-heading-main">Něco krásného</h1>
-      <div class="card-heading-sub">pro Tebe</div>
-
-      <p class="card-body">
-        Každý den je příležitostí najít krásu v maličkostech.
-        Toto přání je právě pro Tebe – jemná připomínka,
-        že jsi výjimečný/á.
-      </p>
-
-      <div class="divider">
-        <div class="divider-line"></div>
-        <div class="divider-dot"></div>
-        <div class="divider-line"></div>
+      <div class="photo-frame" id="photoFrame">
+        <img id="photoImg" alt="Nahraná fotka" />
+        <div class="photo-placeholder" id="photoPlaceholder">
+          <strong>Sem vlož fotku</strong><br>
+          (např. vás dva / něco, co vám něco připomíná).<br>
+          Zůstane to jen u tebe v telefonu – nikam se to neposílá.
+        </div>
       </div>
 
-      <p class="quote">
-        „Krása je všude kolem nás, stačí se jen dívat srdcem.“
-      </p>
-
-      <div class="signature">
-        <span class="signature-heart">♥</span>
-        &nbsp;S LÁSKOU&nbsp;
-        <span class="signature-heart">♥</span>
+      <div class="upload-row">
+        <label class="btn" for="photoInput">Vybrat fotku</label>
+        <button class="btn" id="removeBtn" type="button">Odebrat</button>
+        <button class="btn btn-primary" id="nextBtn" type="button">Pokračovat</button>
       </div>
 
-      <button class="cta-button" id="goBtn">
-        Pokračovat
-      </button>
+      <div class="note">Tip: nejhezčí jsou fotky na výšku 📸</div>
     </div>
   </main>
 
-  <script>
-    // Výchozí styl: valentýn
-    let STYLE = "valentine";
+  <input id="photoInput" type="file" accept="image/*" />
 
-    // Přepnutí přes URL:
-    // index.html?style=valentine | birthday | christmas
+  <script>
+    // ====== přečti ?style= a nastav pozadí stejně jako na indexu ======
     const params = new URLSearchParams(window.location.search);
-    const styleFromUrl = (params.get("style") || "").toLowerCase();
-    if (["valentine", "birthday", "christmas"].includes(styleFromUrl)) {
-      STYLE = styleFromUrl;
-    }
+    let STYLE = (params.get("style") || "valentine").toLowerCase();
+    if (!["valentine","birthday","christmas"].includes(STYLE)) STYLE = "valentine";
 
     const floatingBg = document.getElementById("floatingBg");
-    const items = Array.from(floatingBg.querySelectorAll(".bg-item"));
-    const goBtn = document.getElementById("goBtn");
+    const bgItems = Array.from(floatingBg.querySelectorAll(".bg-item"));
 
-    function setValentine() {
-      // srdíčka (původní)
-      items.forEach((el) => {
+    function setValentineBg() {
+      bgItems.forEach((el) => {
         el.className = "bg-item";
         el.textContent = "❤";
         el.style.color = "var(--accent-soft)";
         el.style.opacity = "0.7";
+        el.style.background = "transparent";
+        el.style.width = "";
+        el.style.height = "";
       });
     }
 
-    function setBirthday() {
-      // konfety v pozadí jako malé tvary
+    function setBirthdayBg() {
       const colors = ["#e45b7b", "#f4a8bf", "#ffd166", "#06d6a0", "#4dabf7"];
-      items.forEach((el, i) => {
-        el.textContent = ""; // nebude vidět
+      bgItems.forEach((el, i) => {
+        el.textContent = "";
         el.className = "bg-item confetti" + (Math.random() < 0.35 ? " round" : "");
         el.style.background = colors[i % colors.length];
         el.style.opacity = "0.45";
@@ -314,24 +296,50 @@
       });
     }
 
-    function setChristmas() {
-      // vločky
+    function setChristmasBg() {
       const flakes = ["❄", "✦", "✧", "✻"];
-      items.forEach((el) => {
+      bgItems.forEach((el) => {
         el.className = "bg-item";
         el.textContent = flakes[Math.floor(Math.random() * flakes.length)];
         el.style.color = "rgba(255,255,255,0.85)";
         el.style.opacity = "0.55";
+        el.style.background = "transparent";
+        el.style.width = "";
+        el.style.height = "";
       });
     }
 
-    if (STYLE === "valentine") setValentine();
-    if (STYLE === "birthday") setBirthday();
-    if (STYLE === "christmas") setChristmas();
+    if (STYLE === "valentine") setValentineBg();
+    if (STYLE === "birthday") setBirthdayBg();
+    if (STYLE === "christmas") setChristmasBg();
 
-    // Předání stylu do scene2 (aby to navazovalo)
-    goBtn.addEventListener("click", () => {
-      window.location.href = "scene2.html?style=" + encodeURIComponent(STYLE);
+    // ====== FOTO PREVIEW (lokálně) ======
+    const input = document.getElementById("photoInput");
+    const img = document.getElementById("photoImg");
+    const placeholder = document.getElementById("photoPlaceholder");
+    const removeBtn = document.getElementById("removeBtn");
+
+    input.addEventListener("change", () => {
+      const file = input.files && input.files[0];
+      if (!file) return;
+
+      const url = URL.createObjectURL(file);
+      img.src = url;
+      img.style.display = "block";
+      placeholder.style.display = "none";
+    });
+
+    removeBtn.addEventListener("click", () => {
+      input.value = "";
+      img.src = "";
+      img.style.display = "none";
+      placeholder.style.display = "block";
+    });
+
+    // ====== DALŠÍ STRÁNKA ======
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      // změň na to, co budeš mít jako další scénu:
+      window.location.href = "scene4.html?style=" + encodeURIComponent(STYLE);
     });
   </script>
 
