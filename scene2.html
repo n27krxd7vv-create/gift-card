@@ -75,7 +75,7 @@
       100% { transform: translateY(0px); opacity: 0.2; }
     }
 
-    /* ANIMACE (stejné ladění jako 1. stránka) */
+    /* ANIMACE */
     @keyframes cardIn {
       from { opacity: 0; transform: translateY(26px) scale(0.95); }
       to   { opacity: 1; transform: translateY(0) scale(1); }
@@ -91,7 +91,7 @@
       perspective: 1800px;
       animation: cardIn 1s ease-out forwards;
       opacity: 0;
-      z-index: 2; /* nad srdíčky */
+      z-index: 2;
       position: relative;
     }
 
@@ -185,7 +185,7 @@
       position: relative;
     }
 
-    /* CONFETTI – vrstva přes celou stránku */
+    /* Vrstva pro částice */
     #confetti-layer{
       position: fixed;
       inset: 0;
@@ -194,6 +194,7 @@
       z-index: 9999;
     }
 
+    /* ======= KONFETY ======= */
     .confetti-piece{
       position: absolute;
       top: -12px;
@@ -211,26 +212,37 @@
       0%   { transform: translate3d(var(--x,0px), -20px, 0) rotate(0deg); opacity: 1; }
       100% { transform: translate3d(var(--x,0px), 110vh, 0) rotate(720deg); opacity: 0.9; }
     }
+
+    /* ======= SRDÍČKA / VLOČKY (emoji částice) ======= */
+    .emoji-fall {
+      position: absolute;
+      top: -24px;
+      font-size: 18px;
+      opacity: 0.95;
+      will-change: transform;
+      animation-name: emoji-fall;
+      animation-timing-function: linear;
+      animation-fill-mode: forwards;
+      pointer-events: none;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.10);
+    }
+
+    @keyframes emoji-fall{
+      0%   { transform: translate3d(var(--x,0px), -20px, 0) rotate(0deg); opacity: 1; }
+      100% { transform: translate3d(var(--x,0px), 110vh, 0) rotate(360deg); opacity: 0.9; }
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- plovoucí srdíčka v pozadí (stejné jako index.html) -->
+  <!-- plovoucí srdíčka v pozadí -->
   <div class="floating-hearts" aria-hidden="true">
-    <div class="heart-bg">❤</div>
-    <div class="heart-bg">❤</div>
-    <div class="heart-bg">❤</div>
-    <div class="heart-bg">❤</div>
-    <div class="heart-bg">❤</div>
-    <div class="heart-bg">❤</div>
-    <div class="heart-bg">❤</div>
-    <div class="heart-bg">❤</div>
-    <div class="heart-bg">❤</div>
-    <div class="heart-bg">❤</div>
+    <div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div>
+    <div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div>
   </div>
 
-  <!-- Konfety -->
+  <!-- Vrstva pro částice -->
   <div id="confetti-layer" aria-hidden="true"></div>
 
   <!-- Karta -->
@@ -268,10 +280,22 @@
     const hint = document.getElementById("hint");
     const confettiLayer = document.getElementById("confetti-layer");
 
+    // Výchozí styl: valentýn (srdíčka)
+    // Můžeš přepnout buď tady:
+    // const STYLE = "birthday"; / "christmas"
+    let STYLE = "valentine";
+
+    // Nebo přes URL:
+    // scene2.html?style=valentine | birthday | christmas
+    const params = new URLSearchParams(window.location.search);
+    const styleFromUrl = (params.get("style") || "").toLowerCase();
+    if (["valentine", "birthday", "christmas"].includes(styleFromUrl)) {
+      STYLE = styleFromUrl;
+    }
+
     let openedOnce = false;
 
-    function launchConfetti(count = 110, durationMs = 2400) {
-      // laděné do stejné palety jako index
+    function launchConfetti(count = 120, durationMs = 2600) {
       const colors = ["#e45b7b", "#f4a8bf", "#ffd166", "#06d6a0", "#4dabf7"];
 
       for (let i = 0; i < count; i++) {
@@ -303,11 +327,52 @@
       setTimeout(() => { confettiLayer.innerHTML = ""; }, durationMs);
     }
 
+    function launchEmoji(symbols, color, count = 90, durationMs = 2600, minSec = 2.0, maxSec = 3.6) {
+      for (let i = 0; i < count; i++) {
+        const e = document.createElement("div");
+        e.className = "emoji-fall";
+        e.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        e.style.color = color;
+
+        e.style.left = (Math.random() * 100) + "vw";
+
+        const size = 14 + Math.random() * 18;
+        e.style.fontSize = size + "px";
+
+        const fallSec = minSec + Math.random() * (maxSec - minSec);
+        e.style.animationDuration = fallSec + "s";
+
+        const drift = (-40 + Math.random() * 80);
+        e.style.setProperty("--x", drift + "px");
+
+        const delay = Math.random() * 0.25;
+        e.style.animationDelay = delay + "s";
+
+        confettiLayer.appendChild(e);
+        setTimeout(() => e.remove(), (fallSec + delay) * 1000 + 120);
+      }
+
+      setTimeout(() => { confettiLayer.innerHTML = ""; }, durationMs);
+    }
+
+    function launchHearts() {
+      launchEmoji(["❤", "♥"], "var(--accent)", 90, 2600, 2.0, 3.6);
+    }
+
+    function launchSnow() {
+      // Vánoční vločky – pomalejší, jemnější, bílé
+      launchEmoji(["❄", "✦", "✧", "✻"], "#ffffff", 75, 3200, 2.8, 4.8);
+    }
+
     card.addEventListener("click", () => {
       if (!openedOnce) {
         openedOnce = true;
-        launchConfetti(120, 2600);
+
+        if (STYLE === "valentine") launchHearts();
+        if (STYLE === "birthday")  launchConfetti();
+        if (STYLE === "christmas") launchSnow();
       }
+
       card.classList.add("open");
       hint.textContent = "";
     });
