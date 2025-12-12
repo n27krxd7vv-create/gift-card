@@ -12,7 +12,6 @@
 
   <style>
     :root {
-      /* stejné jako index.html */
       --bg: #fff8f5;
       --card: #ffffff;
       --accent: #e45b7b;
@@ -39,33 +38,34 @@
       position: relative;
     }
 
-    /* ======= POZADÍ: plovoucí srdíčka (stejné jako index.html) ======= */
-    .floating-hearts {
+    /* ====== POZADÍ: stejné jako index (3 styly) ====== */
+    .floating-bg {
       position: absolute;
       inset: 0;
       overflow: hidden;
       pointer-events: none;
-      z-index: 1; /* pod kartou */
+      z-index: 0;
     }
 
-    .heart-bg {
+    .bg-item {
       position: absolute;
       font-size: 18px;
       color: var(--accent-soft);
       opacity: 0.7;
       animation: float 9s ease-in-out infinite;
+      user-select: none;
     }
 
-    .heart-bg:nth-child(1) { left: 12%; top: 10%; animation-duration: 10s; }
-    .heart-bg:nth-child(2) { left: 80%; top: 18%; animation-duration: 11s; }
-    .heart-bg:nth-child(3) { left: 8%;  top: 60%; animation-duration: 9s; }
-    .heart-bg:nth-child(4) { left: 88%; top: 65%; animation-duration: 8s; }
-    .heart-bg:nth-child(5) { left: 50%; top: 5%;  animation-duration: 12s; }
-    .heart-bg:nth-child(6) { left: 20%; top: 80%; animation-duration: 10s; }
-    .heart-bg:nth-child(7) { left: 70%; top: 82%; animation-duration: 9s; }
-    .heart-bg:nth-child(8) { left: 30%; top: 30%; animation-duration: 13s; }
-    .heart-bg:nth-child(9) { left: 60%; top: 40%; animation-duration: 10s; }
-    .heart-bg:nth-child(10){ left: 45%; top: 72%; animation-duration: 11s; }
+    .bg-item:nth-child(1)  { left: 12%; top: 10%; animation-duration: 10s; }
+    .bg-item:nth-child(2)  { left: 80%; top: 18%; animation-duration: 11s; }
+    .bg-item:nth-child(3)  { left: 8%;  top: 60%; animation-duration: 9s; }
+    .bg-item:nth-child(4)  { left: 88%; top: 65%; animation-duration: 8s; }
+    .bg-item:nth-child(5)  { left: 50%; top: 5%;  animation-duration: 12s; }
+    .bg-item:nth-child(6)  { left: 20%; top: 80%; animation-duration: 10s; }
+    .bg-item:nth-child(7)  { left: 70%; top: 82%; animation-duration: 9s; }
+    .bg-item:nth-child(8)  { left: 30%; top: 30%; animation-duration: 13s; }
+    .bg-item:nth-child(9)  { left: 60%; top: 40%; animation-duration: 10s; }
+    .bg-item:nth-child(10) { left: 45%; top: 72%; animation-duration: 11s; }
 
     @keyframes float {
       0%   { transform: translateY(0px); opacity: 0.2; }
@@ -75,7 +75,18 @@
       100% { transform: translateY(0px); opacity: 0.2; }
     }
 
-    /* ANIMACE */
+    /* birthday pozadí – malé tvary */
+    .bg-item.confetti {
+      font-size: 0;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      background: var(--accent-soft);
+      opacity: 0.55;
+    }
+    .bg-item.confetti.round { border-radius: 999px; }
+
+    /* ====== ANIMACE KARTY / OBSAHU ====== */
     @keyframes cardIn {
       from { opacity: 0; transform: translateY(26px) scale(0.95); }
       to   { opacity: 1; transform: translateY(0) scale(1); }
@@ -86,16 +97,13 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* WRAPPER */
     .card-wrapper {
       perspective: 1800px;
       animation: cardIn 1s ease-out forwards;
       opacity: 0;
       z-index: 2;
-      position: relative;
     }
 
-    /* KARTA */
     .card {
       width: min(450px, 95vw);
       height: min(620px, 170vw);
@@ -107,7 +115,6 @@
 
     .card.open { transform: rotateY(180deg); }
 
-    /* OBĚ STRANY */
     .card-face {
       position: absolute;
       inset: 0;
@@ -130,7 +137,6 @@
       animation-delay: 0.35s;
     }
 
-    /* PŘEDNÍ STRANA */
     .front-title {
       font-family: "Playfair Display", "Times New Roman", serif;
       font-size: 40px;
@@ -145,7 +151,6 @@
       color: var(--text-soft);
     }
 
-    /* ZADNÍ STRANA */
     .card-back { transform: rotateY(180deg); }
 
     .sparkle {
@@ -172,7 +177,7 @@
       font-size: 22px;
     }
 
-    /* text pod kartou */
+    /* ====== NÁPIS POD KARTOU (KLIKNI NA PŘÁNÍ) ====== */
     #hint {
       margin-top: 26px;
       font-size: 16px;
@@ -182,11 +187,10 @@
       animation: contentUp 1.4s ease-out forwards;
       opacity: 0;
       z-index: 2;
-      position: relative;
     }
 
-    /* Vrstva pro částice */
-    #confetti-layer{
+    /* ====== PADAJÍCÍ VRSTVA (srdíčka/konfety/vločky podle stylu) ====== */
+    #fall-layer{
       position: fixed;
       inset: 0;
       pointer-events: none;
@@ -194,56 +198,35 @@
       z-index: 9999;
     }
 
-    /* ======= KONFETY ======= */
-    .confetti-piece{
-      position: absolute;
-      top: -12px;
-      width: 10px;
-      height: 14px;
-      opacity: 0.95;
-      border-radius: 2px;
-      transform: translate3d(0,0,0) rotate(0deg);
-      animation-name: confetti-fall;
-      animation-timing-function: linear;
-      animation-fill-mode: forwards;
-    }
-
-    @keyframes confetti-fall{
-      0%   { transform: translate3d(var(--x,0px), -20px, 0) rotate(0deg); opacity: 1; }
-      100% { transform: translate3d(var(--x,0px), 110vh, 0) rotate(720deg); opacity: 0.9; }
-    }
-
-    /* ======= SRDÍČKA / VLOČKY (emoji částice) ======= */
-    .emoji-fall {
+    .fall-piece{
       position: absolute;
       top: -24px;
-      font-size: 18px;
       opacity: 0.95;
-      will-change: transform;
-      animation-name: emoji-fall;
+      transform: translate3d(0,0,0);
+      animation-name: fall;
       animation-timing-function: linear;
       animation-fill-mode: forwards;
-      pointer-events: none;
-      text-shadow: 0 10px 30px rgba(0,0,0,0.10);
+      user-select: none;
+      will-change: transform, opacity;
     }
 
-    @keyframes emoji-fall{
-      0%   { transform: translate3d(var(--x,0px), -20px, 0) rotate(0deg); opacity: 1; }
-      100% { transform: translate3d(var(--x,0px), 110vh, 0) rotate(360deg); opacity: 0.9; }
+    @keyframes fall{
+      0%   { transform: translate3d(var(--x,0px), -30px, 0) rotate(0deg); opacity: 1; }
+      100% { transform: translate3d(var(--x,0px), 110vh, 0) rotate(720deg); opacity: 0.9; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- plovoucí srdíčka v pozadí -->
-  <div class="floating-hearts" aria-hidden="true">
-    <div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div>
-    <div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div>
+  <!-- Pozadí -->
+  <div class="floating-bg" id="floatingBg" aria-hidden="true">
+    <div class="bg-item">❤</div><div class="bg-item">❤</div><div class="bg-item">❤</div><div class="bg-item">❤</div><div class="bg-item">❤</div>
+    <div class="bg-item">❤</div><div class="bg-item">❤</div><div class="bg-item">❤</div><div class="bg-item">❤</div><div class="bg-item">❤</div>
   </div>
 
-  <!-- Vrstva pro částice -->
-  <div id="confetti-layer" aria-hidden="true"></div>
+  <!-- Padající vrstva -->
+  <div id="fall-layer" aria-hidden="true"></div>
 
   <!-- Karta -->
   <div class="card-wrapper">
@@ -273,108 +256,140 @@
     </div>
   </div>
 
+  <!-- Nápis -->
   <div id="hint">KLIKNI NA PŘÁNÍ</div>
 
   <script>
-    const card = document.getElementById("card");
-    const hint = document.getElementById("hint");
-    const confettiLayer = document.getElementById("confetti-layer");
-
-    // Výchozí styl: valentýn (srdíčka)
-    // Můžeš přepnout buď tady:
-    // const STYLE = "birthday"; / "christmas"
+    // ====== STYLE z URL (dědí se z indexu) ======
     let STYLE = "valentine";
-
-    // Nebo přes URL:
-    // scene2.html?style=valentine | birthday | christmas
     const params = new URLSearchParams(window.location.search);
     const styleFromUrl = (params.get("style") || "").toLowerCase();
     if (["valentine", "birthday", "christmas"].includes(styleFromUrl)) {
       STYLE = styleFromUrl;
     }
 
-    let openedOnce = false;
+    // ====== Pozadí: 3 styly ======
+    const floatingBg = document.getElementById("floatingBg");
+    const bgItems = Array.from(floatingBg.querySelectorAll(".bg-item"));
 
-    function launchConfetti(count = 120, durationMs = 2600) {
+    function setValentineBg() {
+      bgItems.forEach((el) => {
+        el.className = "bg-item";
+        el.textContent = "❤";
+        el.style.color = "var(--accent-soft)";
+        el.style.opacity = "0.7";
+        el.style.background = "transparent";
+        el.style.width = "";
+        el.style.height = "";
+      });
+    }
+
+    function setBirthdayBg() {
       const colors = ["#e45b7b", "#f4a8bf", "#ffd166", "#06d6a0", "#4dabf7"];
+      bgItems.forEach((el, i) => {
+        el.textContent = "";
+        el.className = "bg-item confetti" + (Math.random() < 0.35 ? " round" : "");
+        el.style.background = colors[i % colors.length];
+        el.style.opacity = "0.45";
+        const s = 7 + Math.random() * 8;
+        el.style.width = s + "px";
+        el.style.height = s + "px";
+      });
+    }
+
+    function setChristmasBg() {
+      const flakes = ["❄", "✦", "✧", "✻"];
+      bgItems.forEach((el) => {
+        el.className = "bg-item";
+        el.textContent = flakes[Math.floor(Math.random() * flakes.length)];
+        el.style.color = "rgba(255,255,255,0.85)";
+        el.style.opacity = "0.55";
+        el.style.background = "transparent";
+        el.style.width = "";
+        el.style.height = "";
+      });
+    }
+
+    if (STYLE === "valentine") setValentineBg();
+    if (STYLE === "birthday") setBirthdayBg();
+    if (STYLE === "christmas") setChristmasBg();
+
+    // ====== PADAJÍCÍ EFEKT (1. klik) ======
+    const fallLayer = document.getElementById("fall-layer");
+
+    function launchFalling(count = 120, durationMs = 2600) {
+      // co padá podle stylu
+      const isValentine = STYLE === "valentine";
+      const isBirthday = STYLE === "birthday";
+      const isChristmas = STYLE === "christmas";
+
+      const confettiColors = ["#e45b7b", "#f4a8bf", "#ffd166", "#06d6a0", "#4dabf7", "#f06595"];
+      const snowFlakes = ["❄", "✦", "✧", "✻"];
 
       for (let i = 0; i < count; i++) {
         const p = document.createElement("div");
-        p.className = "confetti-piece";
+        p.className = "fall-piece";
 
+        // Start pozice
         p.style.left = (Math.random() * 100) + "vw";
-        p.style.background = colors[Math.floor(Math.random() * colors.length)];
-        if (Math.random() < 0.35) p.style.borderRadius = "999px";
 
-        const w = 6 + Math.random() * 10;
-        const h = 8 + Math.random() * 14;
-        p.style.width = w + "px";
-        p.style.height = h + "px";
-
-        const fallSec = 1.6 + Math.random() * 1.2;
+        // rychlost + drift
+        const fallSec = 1.6 + Math.random() * 1.2; // 1.6–2.8s
         p.style.animationDuration = fallSec + "s";
-
-        const drift = (-40 + Math.random() * 80);
+        const drift = (-40 + Math.random() * 80); // -40..+40 px
         p.style.setProperty("--x", drift + "px");
-
         const delay = Math.random() * 0.25;
         p.style.animationDelay = delay + "s";
 
-        confettiLayer.appendChild(p);
-        setTimeout(() => p.remove(), (fallSec + delay) * 1000 + 80);
+        if (isValentine) {
+          // ❤️ srdíčka
+          p.textContent = "❤";
+          p.style.color = "var(--accent)";
+          p.style.fontSize = (14 + Math.random() * 18) + "px";
+        } else if (isChristmas) {
+          // ❄ vločky
+          p.textContent = snowFlakes[Math.floor(Math.random() * snowFlakes.length)];
+          p.style.color = "rgba(255,255,255,0.95)";
+          p.style.fontSize = (14 + Math.random() * 20) + "px";
+        } else if (isBirthday) {
+          // 🎉 konfety (tvary)
+          p.textContent = "";
+          const w = 6 + Math.random() * 10;
+          const h = 8 + Math.random() * 14;
+          p.style.width = w + "px";
+          p.style.height = h + "px";
+          p.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+          p.style.borderRadius = (Math.random() < 0.35) ? "999px" : "2px";
+        }
+
+        fallLayer.appendChild(p);
+
+        setTimeout(() => p.remove(), (fallSec + delay) * 1000 + 120);
       }
 
-      setTimeout(() => { confettiLayer.innerHTML = ""; }, durationMs);
+      setTimeout(() => { fallLayer.innerHTML = ""; }, durationMs);
     }
 
-    function launchEmoji(symbols, color, count = 90, durationMs = 2600, minSec = 2.0, maxSec = 3.6) {
-      for (let i = 0; i < count; i++) {
-        const e = document.createElement("div");
-        e.className = "emoji-fall";
-        e.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-        e.style.color = color;
+    // ====== KLIK LOGIKA: 1. klik otevře, 2. klik otevře scene3 ======
+    const card = document.getElementById("card");
+    const hint = document.getElementById("hint");
 
-        e.style.left = (Math.random() * 100) + "vw";
-
-        const size = 14 + Math.random() * 18;
-        e.style.fontSize = size + "px";
-
-        const fallSec = minSec + Math.random() * (maxSec - minSec);
-        e.style.animationDuration = fallSec + "s";
-
-        const drift = (-40 + Math.random() * 80);
-        e.style.setProperty("--x", drift + "px");
-
-        const delay = Math.random() * 0.25;
-        e.style.animationDelay = delay + "s";
-
-        confettiLayer.appendChild(e);
-        setTimeout(() => e.remove(), (fallSec + delay) * 1000 + 120);
-      }
-
-      setTimeout(() => { confettiLayer.innerHTML = ""; }, durationMs);
-    }
-
-    function launchHearts() {
-      launchEmoji(["❤", "♥"], "var(--accent)", 90, 2600, 2.0, 3.6);
-    }
-
-    function launchSnow() {
-      // Vánoční vločky – pomalejší, jemnější, bílé
-      launchEmoji(["❄", "✦", "✧", "✻"], "#ffffff", 75, 3200, 2.8, 4.8);
-    }
+    let openedOnce = false;
 
     card.addEventListener("click", () => {
       if (!openedOnce) {
         openedOnce = true;
 
-        if (STYLE === "valentine") launchHearts();
-        if (STYLE === "birthday")  launchConfetti();
-        if (STYLE === "christmas") launchSnow();
+        launchFalling(120, 2600);
+        card.classList.add("open");
+
+        // necháme text stejný, jak chceš (jen ať je jasný)
+        hint.textContent = "KLIKNI NA PŘÁNÍ";
+        return;
       }
 
-      card.classList.add("open");
-      hint.textContent = "";
+      // druhý klik -> HTML3
+      window.location.href = "scene3.html?style=" + encodeURIComponent(STYLE);
     });
   </script>
 
