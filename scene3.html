@@ -16,15 +16,10 @@
       --card: #ffffff;
       --accent: #e45b7b;
       --accent-soft: #f4a8bf;
-      --text-main: #4b2b33;
       --text-soft: #7b5a63;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       height: 100vh;
@@ -37,17 +32,10 @@
       font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       overflow: hidden;
       position: relative;
-      color: var(--text-main);
     }
 
-    /* plovoucí srdíčka v pozadí */
-    .floating-hearts {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
-
+    /* plovoucí srdíčka */
+    .floating-hearts { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
     .heart-bg {
       position: absolute;
       font-size: 18px;
@@ -55,7 +43,6 @@
       opacity: 0.7;
       animation: float 9s ease-in-out infinite;
     }
-
     .heart-bg:nth-child(1) { left: 12%; top: 10%; animation-duration: 10s; }
     .heart-bg:nth-child(2) { left: 80%; top: 18%; animation-duration: 11s; }
     .heart-bg:nth-child(3) { left: 8%;  top: 60%; animation-duration: 9s; }
@@ -87,12 +74,14 @@
         0 24px 60px rgba(0,0,0,0.09),
         0 0 0 1px rgba(255,255,255,0.85);
       z-index: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      overflow: hidden;
       animation: cardIn 0.7s ease-out forwards;
       transform: translateY(26px);
       opacity: 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     @keyframes cardIn {
@@ -100,7 +89,10 @@
       to   { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* tlačítko vyber fotku */
+    /* input je schovaný */
+    #photoInput { display: none; }
+
+    /* tlačítko */
     .upload-box {
       padding: 14px 34px;
       border-radius: 999px;
@@ -109,15 +101,33 @@
       font-size: 14px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      cursor: pointer;
       transition: all 0.2s ease;
       background: rgba(255,255,255,0.6);
+      user-select: none;
     }
 
-    .upload-box:hover {
+    .card:hover .upload-box {
       border-color: var(--accent);
       color: var(--accent);
       background: rgba(255,255,255,0.9);
+    }
+
+    /* fotka přes celé okno */
+    #preview {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    /* jemný overlay, aby fotka ladila */
+    .photo-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(228,91,123,0.10), transparent 60%);
+      pointer-events: none;
     }
   </style>
 </head>
@@ -133,11 +143,35 @@
   </div>
 
   <!-- karta -->
-  <main class="card">
-    <div class="upload-box">
-      Vyber fotku
-    </div>
+  <main class="card" id="card">
+    <input type="file" id="photoInput" accept="image/*">
+
+    <img id="preview" alt="Vybraná fotka">
+    <div class="photo-overlay"></div>
+
+    <div class="upload-box" id="uploadLabel">Vyber fotku</div>
   </main>
+
+  <script>
+    const card = document.getElementById("card");
+    const input = document.getElementById("photoInput");
+    const preview = document.getElementById("preview");
+    const uploadLabel = document.getElementById("uploadLabel");
+
+    // Klik na kartu nebo tlačítko otevře výběr fotek
+    card.addEventListener("click", () => input.click());
+
+    // Po výběru fotky se zobrazí náhled
+    input.addEventListener("change", () => {
+      const file = input.files && input.files[0];
+      if (!file) return;
+
+      const url = URL.createObjectURL(file);
+      preview.src = url;
+      preview.style.display = "block";
+      uploadLabel.style.display = "none";
+    });
+  </script>
 
 </body>
 </html>
