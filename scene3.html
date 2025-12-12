@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fotka pro Tebe</title>
 
-  <!-- Písma -->
+  <!-- Fonty -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
@@ -16,11 +16,13 @@
       --card: #ffffff;
       --accent: #e45b7b;
       --accent-soft: #f4a8bf;
-      --text-main: #4b2b33;
-      --text-soft: #7b5a63;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       height: 100vh;
@@ -30,316 +32,156 @@
       justify-content: center;
       align-items: center;
       padding: 16px;
-      font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: "Nunito", system-ui, sans-serif;
       overflow: hidden;
       position: relative;
-      color: var(--text-main);
-      text-align: center;
     }
 
-    /* ====== POZADÍ (stejné jako index) ====== */
-    .floating-bg {
+    /* === POHYBUJÍCÍ SE SRDÍČKA – STEJNÉ JAKO INDEX === */
+    .floating-hearts {
       position: absolute;
       inset: 0;
-      overflow: hidden;
       pointer-events: none;
-      z-index: 0;
+      overflow: hidden;
     }
 
-    .bg-item {
+    .heart-bg {
       position: absolute;
       font-size: 18px;
       color: var(--accent-soft);
       opacity: 0.7;
       animation: float 9s ease-in-out infinite;
-      user-select: none;
     }
 
-    .bg-item:nth-child(1)  { left: 12%; top: 10%; animation-duration: 10s; }
-    .bg-item:nth-child(2)  { left: 80%; top: 18%; animation-duration: 11s; }
-    .bg-item:nth-child(3)  { left: 8%;  top: 60%; animation-duration: 9s; }
-    .bg-item:nth-child(4)  { left: 88%; top: 65%; animation-duration: 8s; }
-    .bg-item:nth-child(5)  { left: 50%; top: 5%;  animation-duration: 12s; }
-    .bg-item:nth-child(6)  { left: 20%; top: 80%; animation-duration: 10s; }
-    .bg-item:nth-child(7)  { left: 70%; top: 82%; animation-duration: 9s; }
-    .bg-item:nth-child(8)  { left: 30%; top: 30%; animation-duration: 13s; }
-    .bg-item:nth-child(9)  { left: 60%; top: 40%; animation-duration: 10s; }
-    .bg-item:nth-child(10) { left: 45%; top: 72%; animation-duration: 11s; }
+    .heart-bg:nth-child(1) { left: 12%; top: 10%; animation-duration: 10s; }
+    .heart-bg:nth-child(2) { left: 80%; top: 18%; animation-duration: 11s; }
+    .heart-bg:nth-child(3) { left: 8%;  top: 60%; animation-duration: 9s; }
+    .heart-bg:nth-child(4) { left: 88%; top: 65%; animation-duration: 8s; }
+    .heart-bg:nth-child(5) { left: 50%; top: 5%;  animation-duration: 12s; }
+    .heart-bg:nth-child(6) { left: 20%; top: 80%; animation-duration: 10s; }
+    .heart-bg:nth-child(7) { left: 70%; top: 82%; animation-duration: 9s; }
+    .heart-bg:nth-child(8) { left: 30%; top: 30%; animation-duration: 13s; }
+    .heart-bg:nth-child(9) { left: 60%; top: 40%; animation-duration: 10s; }
+    .heart-bg:nth-child(10){ left: 45%; top: 72%; animation-duration: 11s; }
 
     @keyframes float {
       0%   { transform: translateY(0px); opacity: 0.2; }
-      25%  { opacity: 0.9; }
-      50%  { transform: translateY(-18px); opacity: 0.6; }
-      75%  { opacity: 0.9; }
+      50%  { transform: translateY(-18px); opacity: 0.8; }
       100% { transform: translateY(0px); opacity: 0.2; }
     }
 
-    /* birthday pozadí – malé tvary */
-    .bg-item.confetti {
-      font-size: 0;
-      width: 10px;
-      height: 10px;
-      border-radius: 2px;
-      background: var(--accent-soft);
-      opacity: 0.55;
+    /* === BÍLÁ KARTA – STEJNÁ JAKO INDEX === */
+    .card {
+      position: relative;
+      max-width: 640px;
+      width: 100%;
+      min-height: 420px;
+      background: var(--card);
+      border-radius: 30px;
+      box-shadow:
+        0 24px 60px rgba(0,0,0,0.09),
+        0 0 0 1px rgba(255,255,255,0.85);
+      z-index: 1;
+      overflow: hidden;
+      animation: cardIn 0.7s ease-out forwards;
+      opacity: 0;
+      transform: translateY(26px);
+      cursor: pointer;
     }
-    .bg-item.confetti.round { border-radius: 999px; }
 
-    /* ====== ANIMACE KARTY / OBSAHU (stejné jako index) ====== */
     @keyframes cardIn {
       from { opacity: 0; transform: translateY(26px) scale(0.98); }
       to   { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    @keyframes contentUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .card {
-      position: relative;
-      max-width: 700px;
-      width: 100%;
-      min-height: 520px;
-      background: var(--card);
-      border-radius: 30px;
-      padding: 44px 26px 34px;
-      box-shadow:
-        0 24px 60px rgba(0,0,0,0.09),
-        0 0 0 1px rgba(255,255,255,0.85);
-      z-index: 1;
-      animation: cardIn 0.7s ease-out forwards;
-      transform: translateY(26px);
-      opacity: 0;
-      overflow: hidden;
-    }
-
-    .card-content {
-      opacity: 0;
-      transform: translateY(30px);
-      animation: contentUp 1.2s ease-out forwards;
-      animation-delay: 0.25s;
-    }
-
-    .card-heart {
-      font-size: 28px;
-      color: var(--accent);
-      margin-bottom: 10px;
-    }
-
-    .title {
-      font-family: "Playfair Display", "Times New Roman", serif;
-      font-size: clamp(26px, 6.6vw, 38px);
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      margin-bottom: 4px;
-    }
-
-    .subtitle {
-      font-family: "Playfair Display", "Times New Roman", serif;
-      font-size: clamp(18px, 5vw, 24px);
-      font-style: italic;
-      color: var(--accent);
-      margin-bottom: 18px;
-    }
-
-    /* ====== MÍSTO NA FOTKU ====== */
-    .photo-frame {
-      width: 100%;
-      max-width: 520px;
-      aspect-ratio: 4 / 5; /* krásný portrét */
-      margin: 0 auto 18px;
-      border-radius: 22px;
-      background:
-        radial-gradient(circle at top, rgba(228,91,123,0.10), rgba(255,255,255,1) 60%);
-      border: 1px solid rgba(0,0,0,0.06);
-      box-shadow: 0 18px 50px rgba(0,0,0,0.06);
-      overflow: hidden;
-      position: relative;
-      display: grid;
-      place-items: center;
-    }
-
-    .photo-frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: none; /* zobrazí se až po nahrání */
+    /* === UPLOAD FOTKY === */
+    .photo-input {
+      display: none;
     }
 
     .photo-placeholder {
-      padding: 18px;
-      color: var(--text-soft);
-      line-height: 1.6;
-      max-width: 420px;
-    }
-
-    .photo-placeholder strong {
-      color: var(--text-main);
-    }
-
-    .upload-row {
+      width: 100%;
+      height: 100%;
       display: flex;
       justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin: 12px 0 18px;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 11px 18px;
-      border-radius: 999px;
-      border: 1px solid rgba(0,0,0,0.10);
-      background: rgba(255,255,255,0.75);
-      color: var(--text-main);
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
+      align-items: center;
+      color: #7b5a63;
+      font-size: 16px;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      box-shadow: 0 10px 26px rgba(0,0,0,0.05);
+      background:
+        radial-gradient(circle at top, rgba(228,91,123,0.08), transparent 60%);
     }
 
-    .btn:active { transform: translateY(1px) scale(0.99); }
+    .photo-placeholder span {
+      border: 1px dashed rgba(0,0,0,0.15);
+      padding: 14px 22px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.8);
+    }
 
-    .btn-primary{
-      border: none;
+    .photo-preview {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    /* CTA dole */
+    .cta {
+      position: absolute;
+      bottom: -46px;
+      left: 50%;
+      transform: translateX(-50%);
       background: var(--accent);
       color: #fff;
-      box-shadow: 0 10px 26px rgba(228, 91, 123, 0.35);
-    }
-
-    .btn-primary:hover { filter: brightness(0.98); }
-
-    .note {
+      border-radius: 999px;
+      padding: 11px 28px;
       font-size: 14px;
-      color: var(--text-soft);
-      margin-top: 6px;
-    }
-
-    input[type="file"] { display: none; }
-
-    @media (min-width: 768px) {
-      .card { padding: 54px 56px 46px; min-height: 560px; }
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 8px 22px rgba(228,91,123,0.35);
+      cursor: pointer;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Pozadí -->
-  <div class="floating-bg" id="floatingBg" aria-hidden="true">
-    <div class="bg-item">❤</div><div class="bg-item">❤</div><div class="bg-item">❤</div><div class="bg-item">❤</div><div class="bg-item">❤</div>
-    <div class="bg-item">❤</div><div class="bg-item">❤</div><div class="bg-item">❤</div><div class="bg-item">❤</div><div class="bg-item">❤</div>
+  <!-- srdíčka v pozadí -->
+  <div class="floating-hearts" aria-hidden="true">
+    <div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div>
+    <div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div>
   </div>
 
-  <main class="card" aria-label="Fotka">
-    <div class="card-content">
-      <div class="card-heart">❤</div>
-      <h1 class="title">Tvoje fotka</h1>
-      <div class="subtitle">jen pro Tebe</div>
+  <!-- karta -->
+  <label class="card">
+    <input class="photo-input" type="file" accept="image/*" id="photoInput">
 
-      <div class="photo-frame" id="photoFrame">
-        <img id="photoImg" alt="Nahraná fotka" />
-        <div class="photo-placeholder" id="photoPlaceholder">
-          <strong>Sem vlož fotku</strong><br>
-          (např. vás dva / něco, co vám něco připomíná).<br>
-          Zůstane to jen u tebe v telefonu – nikam se to neposílá.
-        </div>
-      </div>
-
-      <div class="upload-row">
-        <label class="btn" for="photoInput">Vybrat fotku</label>
-        <button class="btn" id="removeBtn" type="button">Odebrat</button>
-        <button class="btn btn-primary" id="nextBtn" type="button">Pokračovat</button>
-      </div>
-
-      <div class="note">Tip: nejhezčí jsou fotky na výšku 📸</div>
+    <div class="photo-placeholder" id="placeholder">
+      <span>Vyber fotku</span>
     </div>
-  </main>
 
-  <input id="photoInput" type="file" accept="image/*" />
+    <img class="photo-preview" id="photoPreview" alt="Fotka">
+
+    <div class="cta" onclick="location.href='scene4.html'">
+      Pokračovat
+    </div>
+  </label>
 
   <script>
-    // ====== přečti ?style= a nastav pozadí stejně jako na indexu ======
-    const params = new URLSearchParams(window.location.search);
-    let STYLE = (params.get("style") || "valentine").toLowerCase();
-    if (!["valentine","birthday","christmas"].includes(STYLE)) STYLE = "valentine";
-
-    const floatingBg = document.getElementById("floatingBg");
-    const bgItems = Array.from(floatingBg.querySelectorAll(".bg-item"));
-
-    function setValentineBg() {
-      bgItems.forEach((el) => {
-        el.className = "bg-item";
-        el.textContent = "❤";
-        el.style.color = "var(--accent-soft)";
-        el.style.opacity = "0.7";
-        el.style.background = "transparent";
-        el.style.width = "";
-        el.style.height = "";
-      });
-    }
-
-    function setBirthdayBg() {
-      const colors = ["#e45b7b", "#f4a8bf", "#ffd166", "#06d6a0", "#4dabf7"];
-      bgItems.forEach((el, i) => {
-        el.textContent = "";
-        el.className = "bg-item confetti" + (Math.random() < 0.35 ? " round" : "");
-        el.style.background = colors[i % colors.length];
-        el.style.opacity = "0.45";
-        const s = 7 + Math.random() * 8;
-        el.style.width = s + "px";
-        el.style.height = s + "px";
-      });
-    }
-
-    function setChristmasBg() {
-      const flakes = ["❄", "✦", "✧", "✻"];
-      bgItems.forEach((el) => {
-        el.className = "bg-item";
-        el.textContent = flakes[Math.floor(Math.random() * flakes.length)];
-        el.style.color = "rgba(255,255,255,0.85)";
-        el.style.opacity = "0.55";
-        el.style.background = "transparent";
-        el.style.width = "";
-        el.style.height = "";
-      });
-    }
-
-    if (STYLE === "valentine") setValentineBg();
-    if (STYLE === "birthday") setBirthdayBg();
-    if (STYLE === "christmas") setChristmasBg();
-
-    // ====== FOTO PREVIEW (lokálně) ======
     const input = document.getElementById("photoInput");
-    const img = document.getElementById("photoImg");
-    const placeholder = document.getElementById("photoPlaceholder");
-    const removeBtn = document.getElementById("removeBtn");
+    const preview = document.getElementById("photoPreview");
+    const placeholder = document.getElementById("placeholder");
 
     input.addEventListener("change", () => {
-      const file = input.files && input.files[0];
+      const file = input.files[0];
       if (!file) return;
 
       const url = URL.createObjectURL(file);
-      img.src = url;
-      img.style.display = "block";
+      preview.src = url;
+      preview.style.display = "block";
       placeholder.style.display = "none";
-    });
-
-    removeBtn.addEventListener("click", () => {
-      input.value = "";
-      img.src = "";
-      img.style.display = "none";
-      placeholder.style.display = "block";
-    });
-
-    // ====== DALŠÍ STRÁNKA ======
-    document.getElementById("nextBtn").addEventListener("click", () => {
-      // změň na to, co budeš mít jako další scénu:
-      window.location.href = "scene4.html?style=" + encodeURIComponent(STYLE);
     });
   </script>
 
