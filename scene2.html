@@ -32,12 +32,13 @@
       align-items: center;
       padding: 16px;
       overflow: hidden;
-      font-family: "Nunito";
+      font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text-main);
       text-align: center;
+      position: relative;
     }
 
-    /* ANIMACE */
+    /* ANIMACE (stejné ladění jako 1. stránka) */
     @keyframes cardIn {
       from { opacity: 0; transform: translateY(26px) scale(0.95); }
       to   { opacity: 1; transform: translateY(0) scale(1); }
@@ -53,12 +54,13 @@
       perspective: 1800px;
       animation: cardIn 1s ease-out forwards;
       opacity: 0;
+      z-index: 2;
     }
 
-    /* KARTA – zvětšeno o dalších 15 % */
+    /* KARTA */
     .card {
-      width: min(450px, 95vw);     /* původně 390 → větší */
-      height: min(620px, 170vw);   /* původně 530 → větší */
+      width: min(450px, 95vw);
+      height: min(620px, 170vw);
       position: relative;
       transform-style: preserve-3d;
       transition: transform 1s ease-in-out;
@@ -69,7 +71,7 @@
       transform: rotateY(180deg);
     }
 
-    /* SPOLEČNÉ PRO OBOUSTRANNOST */
+    /* OBĚ STRANY */
     .card-face {
       position: absolute;
       inset: 0;
@@ -77,8 +79,8 @@
       border-radius: 32px;
       backface-visibility: hidden;
       box-shadow:
-        0 28px 70px rgba(0,0,0,0.1),
-        0 0 0 1px rgba(255,255,255,0.7);
+        0 28px 70px rgba(0,0,0,0.10),
+        0 0 0 1px rgba(255,255,255,0.70);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -92,45 +94,51 @@
       animation-delay: 0.35s;
     }
 
-    /* PŘEDNÍ STRANA (větší texty) */
+    /* PŘEDNÍ STRANA */
     .front-title {
-      font-family: "Playfair Display";
-      font-size: 40px;        /* zvětšeno */
+      font-family: "Playfair Display", "Times New Roman", serif;
+      font-size: 40px;
       color: var(--accent);
       margin-bottom: 14px;
     }
 
     .front-subtitle {
-      font-size: 20px;        /* zvětšeno */
+      font-size: 20px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--text-soft);
     }
 
-    /* ZADNÍ STRANA (větší texty) */
+    /* ZADNÍ STRANA */
     .card-back {
       transform: rotateY(180deg);
     }
 
     .sparkle {
-      font-size: 28px;       /* zvětšeno */
+      font-size: 28px;
       color: var(--accent-soft);
       margin-bottom: 20px;
     }
 
     .inner-title {
-      font-family: "Playfair Display";
-      font-size: 32px;       /* zvětšeno */
+      font-family: "Playfair Display", "Times New Roman", serif;
+      font-size: 32px;
       color: var(--accent);
       margin-bottom: 20px;
     }
 
     .inner-text {
-      font-size: 22px;       /* zvětšeno */
+      font-size: 22px;
       line-height: 1.7;
       color: var(--text-soft);
     }
 
+    .inner-text .heart {
+      color: var(--accent);
+      font-size: 22px;
+    }
+
+    /* text pod kartou */
     #hint {
       margin-top: 26px;
       font-size: 16px;
@@ -139,13 +147,44 @@
       text-transform: uppercase;
       animation: contentUp 1.4s ease-out forwards;
       opacity: 0;
+      z-index: 2;
+    }
+
+    /* CONFETTI (konfety) – vrstva přes celou stránku */
+    #confetti-layer{
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 9999;
+    }
+
+    .confetti-piece{
+      position: absolute;
+      top: -12px;
+      width: 10px;
+      height: 14px;
+      opacity: 0.95;
+      border-radius: 2px;
+      transform: translate3d(0,0,0) rotate(0deg);
+      animation-name: confetti-fall;
+      animation-timing-function: linear;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes confetti-fall{
+      0%   { transform: translate3d(var(--x,0px), -20px, 0) rotate(0deg); opacity: 1; }
+      100% { transform: translate3d(var(--x,0px), 110vh, 0) rotate(720deg); opacity: 0.9; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- KARTA -->
+  <!-- Konfety -->
+  <div id="confetti-layer" aria-hidden="true"></div>
+
+  <!-- Karta -->
   <div class="card-wrapper">
     <div class="card" id="card">
 
@@ -161,7 +200,7 @@
       <div class="card-face card-back">
         <div class="content-anim">
           <div class="sparkle">✨</div>
-          <div class="inner-title">tvůj text</div>
+          <div class="inner-title">Tvůj malý soukromý web</div>
           <div class="inner-text">
             Místo, kde najdeš <br>
             něco krásného <br>
@@ -178,8 +217,59 @@
   <script>
     const card = document.getElementById("card");
     const hint = document.getElementById("hint");
+    const confettiLayer = document.getElementById("confetti-layer");
+
+    let openedOnce = false;
+
+    function launchConfetti(count = 110, durationMs = 2400) {
+      const colors = ["#b93b55", "#e9a3b9", "#ffd166", "#06d6a0", "#4dabf7", "#f06595"];
+
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement("div");
+        p.className = "confetti-piece";
+
+        // Start pozice
+        p.style.left = (Math.random() * 100) + "vw";
+
+        // Barva a občas kolečko
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        if (Math.random() < 0.35) p.style.borderRadius = "999px";
+
+        // Velikost
+        const w = 6 + Math.random() * 10;
+        const h = 8 + Math.random() * 14;
+        p.style.width = w + "px";
+        p.style.height = h + "px";
+
+        // Rychlost + drift do strany
+        const fallSec = 1.6 + Math.random() * 1.2; // 1.6–2.8s
+        p.style.animationDuration = fallSec + "s";
+
+        const drift = (-40 + Math.random() * 80); // -40..+40 px
+        p.style.setProperty("--x", drift + "px");
+
+        // Malé zpoždění
+        const delay = Math.random() * 0.25;
+        p.style.animationDelay = delay + "s";
+
+        confettiLayer.appendChild(p);
+
+        // Remove po doběhnutí
+        setTimeout(() => p.remove(), (fallSec + delay) * 1000 + 80);
+      }
+
+      // jistota: vyčisti po duration
+      setTimeout(() => {
+        confettiLayer.innerHTML = "";
+      }, durationMs);
+    }
 
     card.addEventListener("click", () => {
+      if (!openedOnce) {
+        openedOnce = true;
+        launchConfetti(120, 2600);
+      }
+
       card.classList.add("open");
       hint.textContent = "";
     });
