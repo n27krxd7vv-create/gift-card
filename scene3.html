@@ -114,13 +114,17 @@
 
     /* fotka přes celé okno */
     #preview {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: none;
-    }
+  position: absolute;
+  inset: 0;
+  width: 120%;
+  height: 120%;
+  object-fit: cover;
+  display: none;
+  cursor: grab;
+  user-select: none;
+  transform: translate(0px, 0px);
+  transition: opacity 0.2s ease;
+}
 
     /* jemný overlay, aby fotka ladila */
     .photo-overlay {
@@ -172,6 +176,63 @@
       uploadLabel.style.display = "none";
     });
   </script>
+  <script>
+  const preview = document.getElementById("preview");
+  const card = document.getElementById("card");
+
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
+  let currentX = 0;
+  let currentY = 0;
+
+  function startDrag(x, y) {
+    isDragging = true;
+    startX = x - currentX;
+    startY = y - currentY;
+    preview.style.cursor = "grabbing";
+  }
+
+  function moveDrag(x, y) {
+    if (!isDragging) return;
+
+    currentX = x - startX;
+    currentY = y - startY;
+
+    // omezení pohybu (aby fotka neutekla)
+    const limitX = card.offsetWidth * 0.15;
+    const limitY = card.offsetHeight * 0.15;
+
+    currentX = Math.max(-limitX, Math.min(limitX, currentX));
+    currentY = Math.max(-limitY, Math.min(limitY, currentY));
+
+    preview.style.transform = `translate(${currentX}px, ${currentY}px)`;
+  }
+
+  function endDrag() {
+    isDragging = false;
+    preview.style.cursor = "grab";
+  }
+
+  // MYŠ
+  preview.addEventListener("mousedown", e => startDrag(e.clientX, e.clientY));
+  window.addEventListener("mousemove", e => moveDrag(e.clientX, e.clientY));
+  window.addEventListener("mouseup", endDrag);
+
+  // DOTYK (mobil)
+  preview.addEventListener("touchstart", e => {
+    const t = e.touches[0];
+    startDrag(t.clientX, t.clientY);
+  });
+
+  window.addEventListener("touchmove", e => {
+    if (!isDragging) return;
+    const t = e.touches[0];
+    moveDrag(t.clientX, t.clientY);
+  });
+
+  window.addEventListener("touchend", endDrag);
+</script>
 
 </body>
 </html>
