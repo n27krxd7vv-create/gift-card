@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vyber fotku</title>
 
-  <!-- Písma -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
@@ -16,7 +15,6 @@
       --card: #ffffff;
       --accent: #e45b7b;
       --accent-soft: #f4a8bf;
-      --text-main: #4b2b33;
       --text-soft: #7b5a63;
     }
 
@@ -33,17 +31,10 @@
       font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       overflow: hidden;
       position: relative;
-      color: var(--text-main);
     }
 
-    /* plovoucí srdíčka v pozadí */
-    .floating-hearts {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
-
+    /* plovoucí srdíčka */
+    .floating-hearts { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
     .heart-bg {
       position: absolute;
       font-size: 18px;
@@ -51,7 +42,6 @@
       opacity: 0.7;
       animation: float 9s ease-in-out infinite;
     }
-
     .heart-bg:nth-child(1)  { left: 12%; top: 10%; animation-duration: 10s; }
     .heart-bg:nth-child(2)  { left: 80%; top: 18%; animation-duration: 11s; }
     .heart-bg:nth-child(3)  { left: 8%;  top: 60%; animation-duration: 9s; }
@@ -71,7 +61,6 @@
       100% { transform: translateY(0px); opacity: 0.2; }
     }
 
-    /* karta */
     .card {
       position: relative;
       max-width: 640px;
@@ -79,18 +68,16 @@
       min-height: 420px;
       background: var(--card);
       border-radius: 30px;
-      box-shadow:
-        0 24px 60px rgba(0,0,0,0.09),
-        0 0 0 1px rgba(255,255,255,0.85);
-      z-index: 1;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.09), 0 0 0 1px rgba(255,255,255,0.85);
       overflow: hidden;
-      animation: cardIn 0.7s ease-out forwards;
-      transform: translateY(26px);
-      opacity: 0;
+      z-index: 1;
       cursor: pointer;
       display: flex;
       justify-content: center;
       align-items: center;
+      animation: cardIn 0.7s ease-out forwards;
+      transform: translateY(26px);
+      opacity: 0;
     }
 
     @keyframes cardIn {
@@ -98,10 +85,8 @@
       to   { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* input je schovaný */
     #photoInput { display: none; }
 
-    /* tlačítko "Vyber fotku" */
     .upload-box {
       padding: 14px 34px;
       border-radius: 999px;
@@ -122,7 +107,7 @@
       background: rgba(255,255,255,0.9);
     }
 
-    /* fotka přes celé okno (větší než karta, aby šla posouvat) */
+    /* fotka větší než karta, aby šla posouvat */
     #preview {
       position: absolute;
       inset: 0;
@@ -130,14 +115,17 @@
       height: 120%;
       object-fit: cover;
       display: none;
+      z-index: 2;
+
       cursor: grab;
       user-select: none;
+
+      /* KRITICKÉ pro mobil a Safari */
+      touch-action: none;
+
       transform: translate(0px, 0px);
-      transition: opacity 0.2s ease;
-      z-index: 2;
     }
 
-    /* jemný overlay pro sladění fotky se stylem */
     .photo-overlay {
       position: absolute;
       inset: 0;
@@ -145,17 +133,11 @@
       pointer-events: none;
       z-index: 3;
     }
-
-    /* aby při posouvání na mobilu nejezdila stránka */
-    .no-scroll {
-      touch-action: none;
-    }
   </style>
 </head>
 
 <body>
 
-  <!-- pozadí -->
   <div class="floating-hearts" aria-hidden="true">
     <div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div>
     <div class="heart-bg">❤</div><div class="heart-bg">❤</div><div class="heart-bg">❤</div>
@@ -163,11 +145,11 @@
     <div class="heart-bg">❤</div>
   </div>
 
-  <!-- karta -->
   <main class="card" id="card">
     <input type="file" id="photoInput" accept="image/*">
 
-    <img id="preview" alt="Vybraná fotka">
+    <!-- draggable=false je prohlížečům jasný signál: netahej obrázek jako soubor -->
+    <img id="preview" alt="Vybraná fotka" draggable="false">
     <div class="photo-overlay"></div>
 
     <div class="upload-box" id="uploadLabel">Vyber fotku</div>
@@ -179,11 +161,9 @@
     const preview = document.getElementById("preview");
     const uploadLabel = document.getElementById("uploadLabel");
 
-    // --- nahrání a náhled fotky ---
-    card.addEventListener("click", (e) => {
-      // když už je fotka vybraná, kliknutí na fotku NEOTEVRÁ znovu picker
-      // (aby se dalo normálně posouvat)
-      if (preview.style.display === "block") return;
+    // --- výběr fotky ---
+    card.addEventListener("click", () => {
+      if (preview.style.display === "block") return; // když už je fotka, karta jen slouží na drag
       input.click();
     });
 
@@ -196,69 +176,70 @@
       preview.style.display = "block";
       uploadLabel.style.display = "none";
 
-      // reset pozice po nové fotce
+      // reset posunu
       currentX = 0;
       currentY = 0;
-      preview.style.transform = `translate(${currentX}px, ${currentY}px)`;
+      applyTransform();
     });
 
-    // --- posouvání fotky (drag) ---
-    let isDragging = false;
-    let startX = 0;
-    let startY = 0;
-    let currentX = 0;
-    let currentY = 0;
+    // --- posouvání fotky (Pointer Events) ---
+    let dragging = false;
+    let startX = 0, startY = 0;
+    let currentX = 0, currentY = 0;
 
-    function startDrag(x, y) {
-      if (preview.style.display !== "block") return;
-
-      isDragging = true;
-      startX = x - currentX;
-      startY = y - currentY;
-      preview.style.cursor = "grabbing";
-      preview.classList.add("no-scroll");
+    function limits() {
+      return {
+        x: card.offsetWidth * 0.15,
+        y: card.offsetHeight * 0.15
+      };
     }
 
-    function moveDrag(x, y) {
-      if (!isDragging) return;
-
-      currentX = x - startX;
-      currentY = y - startY;
-
-      // omezení pohybu (15 % velikosti karty)
-      const limitX = card.offsetWidth * 0.15;
-      const limitY = card.offsetHeight * 0.15;
-
-      currentX = Math.max(-limitX, Math.min(limitX, currentX));
-      currentY = Math.max(-limitY, Math.min(limitY, currentY));
-
+    function applyTransform() {
       preview.style.transform = `translate(${currentX}px, ${currentY}px)`;
     }
 
-    function endDrag() {
-      isDragging = false;
-      preview.style.cursor = "grab";
-      preview.classList.remove("no-scroll");
+    function clamp(v, min, max) {
+      return Math.max(min, Math.min(max, v));
     }
 
-    // MYŠ
-    preview.addEventListener("mousedown", (e) => startDrag(e.clientX, e.clientY));
-    window.addEventListener("mousemove", (e) => moveDrag(e.clientX, e.clientY));
-    window.addEventListener("mouseup", endDrag);
+    // DŮLEŽITÉ: zruší defaultní drag obrázku (ghost image)
+    preview.addEventListener("dragstart", (e) => e.preventDefault());
 
-    // DOTYK (mobil)
-    preview.addEventListener("touchstart", (e) => {
-      const t = e.touches[0];
-      startDrag(t.clientX, t.clientY);
-    }, { passive: true });
+    preview.addEventListener("pointerdown", (e) => {
+      if (preview.style.display !== "block") return;
 
-    window.addEventListener("touchmove", (e) => {
-      if (!isDragging) return;
-      const t = e.touches[0];
-      moveDrag(t.clientX, t.clientY);
-    }, { passive: true });
+      dragging = true;
+      preview.style.cursor = "grabbing";
 
-    window.addEventListener("touchend", endDrag);
+      // zachytíme pointer, aby pohyb fungoval i když ujedeš mimo obrázek
+      preview.setPointerCapture(e.pointerId);
+
+      startX = e.clientX - currentX;
+      startY = e.clientY - currentY;
+      e.preventDefault();
+    });
+
+    preview.addEventListener("pointermove", (e) => {
+      if (!dragging) return;
+
+      const lim = limits();
+      currentX = clamp(e.clientX - startX, -lim.x, lim.x);
+      currentY = clamp(e.clientY - startY, -lim.y, lim.y);
+
+      applyTransform();
+      e.preventDefault();
+    });
+
+    preview.addEventListener("pointerup", (e) => {
+      dragging = false;
+      preview.style.cursor = "grab";
+      e.preventDefault();
+    });
+
+    preview.addEventListener("pointercancel", () => {
+      dragging = false;
+      preview.style.cursor = "grab";
+    });
   </script>
 
 </body>
